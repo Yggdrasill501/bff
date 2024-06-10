@@ -1,7 +1,7 @@
-make_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.10)
 
 # Set your project name
-project(BFF)
+project(bff)
 
 # C++ standard
 set(CMAKE_CXX_STANDARD 20)
@@ -22,6 +22,7 @@ set(SOURCES
 )
 
 # Add executable
-add_executable(CimiWeb ${SOURCES}
+add_executable(bff ${SOURCES}
         /src/main.cpp
 )
+
