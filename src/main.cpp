@@ -6,22 +6,26 @@
 
 namespace fs = std::filesystem;
 
-void list_files(const fs::path& directory, std::vector<std::string>& files) {
+void list_files(const fs::path& directory, std::vector<std::string>& files, std::vector<bool>& is_directory) {
     files.clear();
+    is_directory.clear();
     if (fs::exists(directory) && fs::is_directory(directory)) {
         for (const auto& entry : fs::directory_iterator(directory)) {
             files.push_back(entry.path().filename().string());
+            is_directory.push_back(entry.is_directory());
         }
     }
 }
 
-void display_files(const std::vector<std::string>& files, int highlight) {
+void display_files(const std::vector<std::string>& files, const std::vector<bool>& is_directory, int highlight) {
     clear();
     for (size_t i = 0; i < files.size(); ++i) {
         if (i == highlight) {
             attron(A_REVERSE);
         }
-        mvprintw(i, 0, files[i].c_str());
+        std::string display_name = is_directory[i] ? "[📁] " : "[📄] ";
+        display_name += files[i];
+        mvprintw(i, 0, display_name.c_str());
         if (i == highlight) {
             attroff(A_REVERSE);
         }
@@ -37,10 +41,11 @@ int main() {
 
     fs::path current_path = fs::current_path();
     std::vector<std::string> files;
+    std::vector<bool> is_directory;
     int highlight = 0;
 
-    list_files(current_path, files);
-    display_files(files, highlight);
+    list_files(current_path, files, is_directory);
+    display_files(files, is_directory, highlight);
 
     int ch;
     while ((ch = getch()) != 'q') {
@@ -56,14 +61,14 @@ int main() {
             }
             break;
         case 10: // Enter key
-            if (fs::is_directory(current_path / files[highlight])) {
+            if (is_directory[highlight]) {
                 current_path /= files[highlight];
-                list_files(current_path, files);
+                list_files(current_path, files, is_directory);
                 highlight = 0;
             }
             break;
         }
-        display_files(files, highlight);
+        display_files(files, is_directory, highlight);
     }
 
     endwin(); // End curses mode
