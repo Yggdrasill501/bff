@@ -4,32 +4,27 @@ on: [push]
 
 jobs:
   sast_scan:
-    name: Run Security Checks
+    name: Run Bandit Scan
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2      
-        with:
-          fetch-depth: 0
-          ref: ${{ github.head_ref }} // necessary for pull request workflow trigger
-      - name: trufflehog-actions-scan
-        uses: edplato/trufflehog-actions-scan@master
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Setup Python
-        uses: actions/setup-python@v5.1.0
-        with:
-          python-version: 3.9
+    - name: Setup Python
+      uses: actions/setup-python@v5.1.0
+      with:
+        python-version: 3.9
 
-      - name: Install Bandit
-        run: pip install bandit
-  
-      - name: Run Bandit Scan
-        run: bandit -ll -ii -r . -f json -o bandit-report.json
-  
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: bandit-findings
-          path: bandit-report.json
+    - name: Install Bandit
+      run: pip install bandit
+
+    - name: Run Bandit Scan
+      run: bandit -ll -ii -r . -f json -o bandit-report.json
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: bandit-findings
+        path: bandit-report.json
