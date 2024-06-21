@@ -1,6 +1,11 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 #include <filesystem>
+#include "fstream"
+#include <vector>
+#include <string>
+#include <ncurses.h>
+
 namespace fs = std::filesystem;
 
 void create_new_file(const fs::path& current_path);
