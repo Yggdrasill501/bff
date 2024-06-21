@@ -17,7 +17,8 @@ include_directories(${PROJECT_SOURCE_DIR}/src)
 # Source files
 set(SOURCES
     src/main.cpp
-)
+    src/controller.cpp
+    )
 
 # Add executable
 add_executable(bff ${SOURCES})

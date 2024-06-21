@@ -3,6 +3,7 @@
 #include <string>
 #include <ncurses.h>
 #include "controller.h"
+
 namespace fs = std::filesystem;
 
 int main() {

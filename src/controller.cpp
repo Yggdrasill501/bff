@@ -22,9 +22,7 @@ void create_new_file(const fs::path& current_path) {
         mvprintw(LINES - 1, 0, "Failed to create file.              ");
     }
     refresh();
-}
-
-void list_files(const fs::path& directory, std::vector<std::string>& files, std::vector<bool>& is_directory) {
+} void list_files(const fs::path& directory, std::vector<std::string>& files, std::vector<bool>& is_directory) {
     files.clear();
     is_directory.clear();
     if (fs::exists(directory) && fs::is_directory(directory)) {
@@ -33,9 +31,7 @@ void list_files(const fs::path& directory, std::vector<std::string>& files, std:
             is_directory.push_back(entry.is_directory());
         }
     }
-}
-
-void display_files(const std::vector<std::string>& files, const std::vector<bool>& is_directory, int highlight) {
+} void display_files(const std::vector<std::string>& files, const std::vector<bool>& is_directory, int highlight) {
     clear();
     for (size_t i = 0; i < files.size(); ++i) {
         if (i == highlight) {
