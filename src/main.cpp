@@ -35,11 +35,11 @@ void display_files(const std::vector<std::string>& files, const std::vector<bool
 }
 
 void create_new_file(const fs::path& current_path) {
-    echo();  // Enable echoing of characters
+    echo();
     mvprintw(LINES - 1, 0, "Enter new file name: ");
     char filename[256];
     getnstr(filename, 255);
-    noecho();  // Disable echoing of characters again
+    noecho();
 
     fs::path new_file_path = current_path / filename;
     std::ofstream new_file(new_file_path.string());
@@ -53,10 +53,10 @@ void create_new_file(const fs::path& current_path) {
 }
 
 int main() {
-    initscr();            // Start curses mode
-    cbreak();             // Line buffering disabled
-    noecho();             // Don't echo while we do getch
-    keypad(stdscr, TRUE); // Enable function keys and arrow keys
+    initscr();
+    cbreak();
+    noecho();
+    keypad(stdscr, TRUE);
 
     fs::path current_path = fs::current_path();
     std::vector<std::string> files;
@@ -99,6 +99,6 @@ int main() {
         display_files(files, is_directory, highlight);
     }
 
-    endwin(); // End curses mode
+    endwin();
     return 0;
 }
