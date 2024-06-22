@@ -15,36 +15,41 @@ void list_files(const fs::path& directory, std::vector<std::string>& files, std:
     }
 }
 
-void display_files(const std::vector<std::string>& files, const std::vector<bool>& is_directory, int highlight) {
+void list_files_recursive(const fs::path& directory, std::vector<std::string>& files, std::vector<bool>& is_directory, const std::string& prefix = "") {
+    if (fs::exists(directory) && fs::is_directory(directory)) {
+        std::string new_prefix;
+        for (const auto& entry : fs::directory_iterator(directory)) {
+            new_prefix = prefix + "├── ";
+            if (entry.is_directory()) {
+                files.push_back(prefix + "└── " + entry.path().filename().string() + "/");
+                is_directory.push_back(true);
+                list_files_recursive(entry, files, is_directory, new_prefix + "    ");
+            } else {
+                files.push_back(new_prefix + entry.path().filename().string());
+                is_directory.push_back(false);
+            }
+        }
+    }
+}
+
+void display_files(const std::vector<std::string>& files, const std::vector<bool>& is_directory, int highlight, const fs::path& current_path, bool tree_mode) {
     clear();
+    mvprintw(0, 0, "Current Path: %s", current_path.c_str());
+    mvprintw(1, 0, "Mode: %s", tree_mode ? "Tree" : "List");
+
     for (size_t i = 0; i < files.size(); ++i) {
         if (i == highlight) {
             attron(A_REVERSE);
         }
-        std::string display_name = is_directory[i] ? "[D] " : "- ";
-        display_name += files[i];
-        mvprintw(i, 0, display_name.c_str());
+        mvprintw(i + 2, 0, files[i].c_str());
         if (i == highlight) {
             attroff(A_REVERSE);
         }
     }
     refresh();
 }
-
 void create_new_file(const fs::path& current_path) {
-    echo();
+    echo();  // Enable echoing of characters
     mvprintw(LINES - 1, 0, "Enter new file name: ");
     char filename[256];
-    getnstr(filename, 255);
-    noecho();
-
-    fs::path new_file_path = current_path / filename;
-    std::ofstream new_file(new_file_path.string());
-    if (new_file) {
-        new_file.close();
-        mvprintw(LINES - 1, 0, "File created successfully.           ");
-    } else {
-        mvprintw(LINES - 1, 0, "Failed to create file.              ");
-    }
-    refresh();
 }
