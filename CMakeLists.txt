@@ -22,3 +22,6 @@ set(SOURCES
 
 # Add executable
 add_executable(bff ${SOURCES})
+
+# Link ncurses library
+target_link_libraries(bff ncurses)
