@@ -18,12 +18,10 @@ include_directories(${PROJECT_SOURCE_DIR}/src)
 set(SOURCES
     src/main.cpp
     src/controller.cpp
-    )
+)
 
 # Add executable
 add_executable(bff ${SOURCES})
 
 # Link ncurses library
-find_package(Curses REQUIRED)
-include_directories(${CURSES_INCLUDE_DIR})
-target_link_libraries(bff ${CURSES_LIBRARIES})
+target_link_libraries(bff ncurses)

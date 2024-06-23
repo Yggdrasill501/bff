@@ -1,17 +1,18 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
-#include <filesystem>
-#include "fstream"
+
 #include <vector>
 #include <string>
-#include <ncurses.h>
+#include <filesystem>
 
 namespace fs = std::filesystem;
 
-void create_new_file(const fs::path& current_path);
+void list_files(const fs::path& dir, std::vector<std::string>& files, std::vector<bool>& is_directory);
 
-void list_files(const fs::path& directory, std::vector<std::string>& files, std::vector<bool>& is_directory);
+void display_files(const std::vector<std::string>& files, const std::vector<bool>& is_directory, int highlight, const fs::path& current_path, bool tree_mode);
 
-void display_files(const std::vector<std::string>& files, const std::vector<bool>& is_directory, int highlight);
+void create_new_file(const fs::path& dir);
+
+void list_files_recursive(const fs::path& dir, std::vector<std::string>& files, std::vector<bool>& is_directory, const std::string& prefix = "");
 
 #endif // CONTROLLER_H
