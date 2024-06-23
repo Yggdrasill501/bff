@@ -17,11 +17,13 @@ void list_files(const fs::path& dir, std::vector<std::string>& files, std::vecto
     }
 }
 
-void list_files_recursive(const fs::path& dir, std::vector<std::string>& files, std::vector<bool>& is_directory, const std::string& prefix = "") {
-    files.clear();
-    is_directory.clear();
+void list_files_recursive(const fs::path& dir, std::vector<std::string>& files, std::vector<bool>& is_directory, const std::string& prefix) {
+    if (prefix.empty()) {
+        files.clear();
+        is_directory.clear();
+    }
 
-    if (dir.has_parent_path()) {
+    if (dir.has_parent_path() && prefix.empty()) {
         files.push_back(prefix + "..");
         is_directory.push_back(true);
     }
