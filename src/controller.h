@@ -1,18 +1,18 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
-#include <vector>
-#include <string>
-#include <filesystem>
+#include <QMainWindow>
+#include <QListWidget>
 
-namespace fs = std::filesystem;
+class MainWindow : public QMainWindow {
+    Q_OBJECT
 
-void list_files(const fs::path& dir, std::vector<std::string>& files, std::vector<bool>& is_directory);
+public:
+    explicit MainWindow(QWidget *parent = nullptr);
 
-void display_files(const std::vector<std::string>& files, const std::vector<bool>& is_directory, int highlight, const fs::path& current_path, bool tree_mode);
-
-void create_new_file(const fs::path& dir);
-
-void list_files_recursive(const fs::path& dir, std::vector<std::string>& files, std::vector<bool>& is_directory, const std::string& prefix = "");
+private:
+    void listFiles(const QString &path);
+    QListWidget *fileListWidget;
+};
 
 #endif // CONTROLLER_H

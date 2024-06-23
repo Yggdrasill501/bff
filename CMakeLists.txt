@@ -1,17 +1,13 @@
 cmake_minimum_required(VERSION 3.10)
 
-# Set your project name
 project(bff)
 
-# C++ standard
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug)
-endif()
+# Find Qt 6 packages
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
 
-# Include directories
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
 # Source files
@@ -21,8 +17,19 @@ set(SOURCES
     src/icons.cpp
 )
 
-# Add executable
-add_executable(bff ${SOURCES})
+# Header files
+set(HEADERS
+    src/controller.h
+    src/icons.h
+)
 
-# Link ncurses library
-target_link_libraries(bff ncurses)
+qt6_wrap_cpp(MOC_SOURCES ${HEADERS})
+
+# Resource files
+qt6_add_resources(RESOURCES resources.qrc)
+
+# Add executable
+add_executable(bff ${SOURCES} ${MOC_SOURCES} ${RESOURCES})
+
+# Link Qt 6 libraries
+target_link_libraries(bff Qt6::Core Qt6::Gui Qt6::Widgets)

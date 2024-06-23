@@ -1,12 +1,9 @@
 #ifndef ICONS_H
 #define ICONS_H
 
-#include <string>
-#include <filesystem>
-#include <unordered_map>
+#include <QIcon>
+#include <QFileInfo>
 
-namespace fs = std::filesystem;
+QIcon getIcon(const QFileInfo &fileInfo);
 
-std::string get_icon(const fs::path& path);
-
-#endif //ICONS_H
+#endif // ICONS_H

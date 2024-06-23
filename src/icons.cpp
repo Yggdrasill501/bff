@@ -1,20 +1,12 @@
 #include "icons.h"
+#include <QFileIconProvider>
 
-std::string get_icon(const fs::path& path){
-    if (fs::is_directory(path)){
-        return  "📁";
+QIcon getIcon(const QFileInfo &fileInfo) {
+    QFileIconProvider provider;
+    if (fileInfo.isDir()) {
+        return QIcon(":/icons/directory.svg");
     } else {
-        static std::unordered_map<std::string, std::string> extensions_to_icons = {
-            {".txt", "📝"},
-            {".cpp", "👾"},
-            {".h", "🔖"},
-            {".md", "📄"},
-        };
-        auto ext = path.extension().string();
-        if (extensions_to_icons.find(ext) != extensions_to_icons.end()){
-            return extensions_to_icons[ext];
-        } else {
-            return "📄";
-        }
+        // You can add more specific file type handling here
+        return QIcon(":/icons/file.svg");
     }
 }
