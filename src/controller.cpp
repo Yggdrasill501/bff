@@ -1,4 +1,5 @@
 #include "controller.h"
+#include "icons.h"
 #include <ncurses.h>
 #include <fstream>
 
@@ -18,18 +19,14 @@ void list_files(const fs::path& dir, std::vector<std::string>& files, std::vecto
 }
 
 void list_files_recursive(const fs::path& dir, std::vector<std::string>& files, std::vector<bool>& is_directory, const std::string& prefix) {
-    if (prefix.empty()) {
-        files.clear();
-        is_directory.clear();
-    }
-
-    if (dir.has_parent_path() && prefix.empty()) {
+    if (dir.has_parent_path()) {
         files.push_back(prefix + "..");
         is_directory.push_back(true);
     }
 
     for (const auto& entry : fs::directory_iterator(dir)) {
-        files.push_back(prefix + entry.path().filename().string());
+        std::string filename = entry.path().filename().string();
+        files.push_back(prefix + get_icon(entry.path()) + " " + filename);
         is_directory.push_back(entry.is_directory());
 
         if (entry.is_directory()) {

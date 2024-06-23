@@ -18,6 +18,7 @@ include_directories(${PROJECT_SOURCE_DIR}/src)
 set(SOURCES
     src/main.cpp
     src/controller.cpp
+    src/icons.cpp
 )
 
 # Add executable

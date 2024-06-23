@@ -1,5 +1,6 @@
 #include <ncurses.h>
 #include "controller.h"
+#include "icons.h"
 
 int main() {
     initscr();            // Start curses mode
@@ -24,7 +25,7 @@ int main() {
         } else if (ch == 't') {
             tree_mode = !tree_mode;
             if (tree_mode) {
-                list_files_recursive(current_path, files, is_directory);
+                list_files_recursive(current_path, files, is_directory, "");
             } else {
                 list_files(current_path, files, is_directory);
             }
@@ -32,7 +33,7 @@ int main() {
         } else if (ch == '%') {
             create_new_file(current_path);
             if (tree_mode) {
-                list_files_recursive(current_path, files, is_directory);
+                list_files_recursive(current_path, files, is_directory, "");
             } else {
                 list_files(current_path, files, is_directory);
             }
@@ -55,7 +56,7 @@ int main() {
                 if (current_path.has_parent_path()) {
                     current_path = current_path.parent_path();
                     if (tree_mode) {
-                        list_files_recursive(current_path, files, is_directory);
+                        list_files_recursive(current_path, files, is_directory, "");
                     } else {
                         list_files(current_path, files, is_directory);
                     }
@@ -71,7 +72,7 @@ int main() {
                         current_path /= files[highlight].substr(files[highlight].find_last_of(" ") + 1); // extract actual dir name
                     }
                     if (tree_mode) {
-                        list_files_recursive(current_path, files, is_directory);
+                        list_files_recursive(current_path, files, is_directory, "");
                     } else {
                         list_files(current_path, files, is_directory);
                     }
